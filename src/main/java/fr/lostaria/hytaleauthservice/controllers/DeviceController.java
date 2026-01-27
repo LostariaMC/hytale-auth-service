@@ -1,29 +1,23 @@
 package fr.lostaria.hytaleauthservice.controllers;
 
 import fr.lostaria.hytaleauthservice.services.DeviceService;
-import fr.lostaria.hytaleauthservice.services.JwtService;
 import fr.lostaria.hytaleauthservice.utils.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/token")
-public class TokenController {
+@RequestMapping("/devices")
+public class DeviceController {
 
     private final DeviceService deviceService;
-    private final JwtService jwtService;
 
-    public TokenController(DeviceService deviceService, JwtService jwtService) {
+    public DeviceController(DeviceService deviceService) {
         this.deviceService = deviceService;
-        this.jwtService = jwtService;
     }
 
-    @GetMapping
+    @GetMapping("/generate")
     public ResponseEntity generateToken(
             @RequestParam(name = "deviceToken") String deviceToken,
             HttpServletRequest request
@@ -34,7 +28,7 @@ public class TokenController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(jwtService.generateToken(deviceToken));
+        return ResponseEntity.status(HttpStatus.CREATED).body(deviceService.generateToken());
     }
 
 }

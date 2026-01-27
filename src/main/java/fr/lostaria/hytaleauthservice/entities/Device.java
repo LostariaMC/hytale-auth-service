@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Device {
 
     @Id
-    private String id;
+    private String token;
 
     @Column(nullable = false)
     public String ip;

@@ -14,12 +14,16 @@ public class JwtService {
     @Value("${jwt.secret}")
     String secretKey;
 
+    @Value("${jwt.issuer}")
+    String issuer;
+
+
     public String generateToken(String deviceToken) {
         String deviceId = deviceToken.split(":")[0];
         Instant now = Instant.now();
 
         return JWT.create()
-                .withIssuer("auth-service")
+                .withIssuer(issuer)
                 .withSubject(deviceId)
                 .withExpiresAt(Date.from(now.plusSeconds(3600)))
                 .sign(Algorithm.HMAC256(secretKey));
